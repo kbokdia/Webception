@@ -9,7 +9,7 @@ if(isset($_SESSION['s_id']))
 		$store_id = (int) $_GET["store_id"];
 //		$store_name = $_GET["store_name"];
 		include("header.php");
-		$sql = "SELECT * FROM `category` WHERE `store_id` =".$store_id;
+		$sql = "SELECT * FROM `category` WHERE `store_id` =".$store_id ." ORDER BY category_name";
 		$rs = array();
 		if($result = mysqli_query($connection,$sql))
 		{

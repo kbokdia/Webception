@@ -38,7 +38,6 @@ body {
 	padding-top: 60px;
 }
 </style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet" />
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
 <script>
@@ -172,6 +171,7 @@ body {
 				<div class="col-md-6">
 					<input type="hidden" name="store_id" value="<?php echo $store_id ?>" />
 					<input type="hidden" name="store_name" value="<?php echo $store_name?>" />
+					<input type="hidden"  name="product_id" id="input_product_id" /> 
 					<input type="hidden" name="submitted" id="product_submitted"/>
 					<label for="input_product_image">Product Image</label>
 					<input type="file" name="file" id="input_product_image"><br />
@@ -212,13 +212,24 @@ body {
 	var product_id = new Array();
 	var product_name = new Array();
 	var product_image = new Array();
+	var product_price = new Array();
 	var product_category = new Array();
+	var product_key_features = new Array();
+	var product_description = new Array();
+	var product_model_no = new Array();
 	
 	//To check if add category btn clicked
 	var is_add_category_btn_clicked = false;
 
+	//To check edit_product btn clicked
+	var is_edit_product_btn_clicked = false;
+
 	//get category index variable
 	var get_category_index;
+
+	//get product index variable
+	var get_product_index;
+
 	//current page detail
 	var current_page;
 
@@ -273,6 +284,10 @@ body {
 				 product_name[i] = value.name;
 				 product_image[i] = value.product_image;
 				 product_category[i] = value.category_id;
+				 product_description[i] = value.product_description;
+				 product_key_features[i] = value.product_key_features;
+				 product_model_no[i] = value.product_model_no;
+				 product_price[i] = value.price;
 			});
 			display_products_fn();
 		});
@@ -299,13 +314,13 @@ body {
 	//Display Product function
 	function display_product_fn(name,image)
 	{
-		var content = "<div class='col-xs-12 col-sm-6 col-md-3'><div class='thumbnail'>";
+		var content = "<div class='col-xs-12 col-sm-6 col-md-3'><div>";
 		content += "<div class='dropdown'><a data-toggle='dropdown' href='#'>";
-		content += "<img src='"+image+"' width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center'>"+name+"</h5></a>";
+		content += "<img src='"+image+"' width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>"+name+"</h5></a>";
 		content += "<ul class='dropdown-menu' role='menu' aria-labelledby='dLabel'>";
 		content += "<li><a href='#' class='view_product text-center'><strong>View</strong></a></li><li class= 'divider'></li>";
 		content += "<li><a href='#' class='edit_product'><span class='glyphicon glyphicon-edit'></span> Edit</a></li><li><a href='#' class='delete_product'><span class='glyphicon glyphicon-remove-circle'></span> Delete</a></li>";
-		content +="</ul></div>";
+		content +="</ul></div></div></div>";
 		$("#display_products_row").append(content);
 	};
 
@@ -434,7 +449,12 @@ body {
 			product_name.splice(index_variable, 1);
 			product_image.splice(index_variable, 1);
 			product_category.splice(index_variable, 1);
+			product_price.splice(index_variable, 1);
+			product_description.splice(index_variable, 1);
+			product_key_features.splice(index_variable, 1);
+			product_model_no.splice(index_variable, 1);
 		}
+		display_products_fn();
 	}
 
 
@@ -486,8 +506,70 @@ body {
 	{
 		current_page = name;
 	};
+
+	function view_product(e)
+	{
+		e.preventDefault();
+		current_page = $(e.currentTarget).parents(".dropdown").find(".product_name").text();
+
+		var temp_product_index = product_name.indexOf(current_page);
+		
+		//empties the display area
+		$("#display_products_row").empty();
+
+		var content = "<div class='row'>";
+		content += "<div class='col-md-1'></div>";
+		content += "<div class='col-md-4'>";
+		content += "<div>";
+		content += "<img src='"+product_image[temp_product_index]+"' width='100%' style='height:400px;' />";
+		content += "</div>";
+		content += "</div>";
+		content += "<div class='col-md-1'></div>";
+		content += "<div class='col-md-6'>";
+		content += "<p><h2>"+product_name[temp_product_index]+"</h2><small class='text-muted'>Model: "+product_model_no[temp_product_index]+"</small></p><br/>";
+		content += "<p><h3>Rs."+product_price[temp_product_index]+"<h3></p>";
+		content += "<p><button class='btn btn-success btn-lg' disabled='disabled'><span class='glyphicon glyphicon-shopping-cart'></span> Add to cart</button></p><br/><br/>";
+		content += "<p><h4>Product Description</h4></p><br/><p>"+product_description[temp_product_index]+"</p>";
+		content += "</div>";
+		content += "</div>";
+
+		$("#display_products_row").append(content);
+
+	}
 	
-	$(window).load(function(e) {		
+	function edit_product(e)
+	{
+		e.preventDefault();
+		current_page = $(e.currentTarget).parents(".dropdown").find(".product_name").text();
+
+		//set product index
+		get_product_index = product_name.indexOf(current_page);
+
+		//Disable add category btn
+		is_edit_product_btn_clicked = true;
+
+		console.log(product_name[get_product_index]);
+		console.log(product_id[get_product_index]);
+		$("#input_product_id").val(product_id[get_product_index]);
+		$("#product_submitted").val(2);
+		$("#product_modal").modal('show');
+	}
+
+	function delete_product(e)
+	{
+		e.preventDefault();
+		current_page = $(e.currentTarget).parents(".dropdown").find(".product_name").text();
+
+		//set product index
+		get_product_index = product_name.indexOf(current_page);
+
+		if(confirm("Are you sure? Product will be DELETED..."))
+		{
+			remove_product(get_product_index);
+		}
+	}
+	
+	$(document).ready(function(e) {
 		//on document load title display store title
 		get_store_title(store_id);  
 		
@@ -496,9 +578,6 @@ body {
 
 		//get products
 		get_products();
-    });
-	
-	$(document).ready(function(e) {
 		//hide modal
 		$("#category_modal").modal('hide');
 		
@@ -551,13 +630,24 @@ body {
 			}
 	    });
 
-	    $("#product_modal").on('show.bs.modal', function(event) {
+	    $("#product_modal").on('show.bs.modal', function(e) {
 	    	document.forms["form_product"].reset();
+	    	create_category_dropDown_box();
 	    	$("#display_product_image").empty();
 	    });
 
 	     $("#product_modal").on('shown.bs.modal', function(event) {
+
 	    	$("#input_product_name").focus();
+
+	    	if(is_edit_product_btn_clicked == true)
+	    	{
+	    		$("#input_product_name").val(product_name[get_product_index]);
+	    		$("#input_product_model_no").val(product_model_no[get_product_index]);
+	    		$("#input_product_price").val(product_price[get_product_index]);
+	    		$("#input_product_description").val(product_description[get_product_index]);
+	    		$("#input_product_key_features").val(product_key_features[get_product_index]);
+	    	}
 	    });
 
 		//on selecting product image display image
@@ -609,11 +699,13 @@ body {
 				processData:false,
 				contentType:false
 			})
-			.done(function()
+			.done(function(data)
 				{
+					console.log(data);
 					get_products();
 				});
 		});
+
 		//on add category click trigger add_category function
 		$("nav").on("click","#add_category_btn",add_category);
 
@@ -631,7 +723,15 @@ body {
 		
 		//on delete category click trigger delete_category function
 		$("#display_categories").on("click",".delete_category",delete_category);
-	
+
+		//on view product click trigger view_product function
+		$("#display_products").on('click', '.view_product', view_product);
+
+		//on edit product click trigger edit_product function
+		$("#display_products").on('click', '.edit_product', edit_product);
+
+		//on delete product click trigger delete_product function
+		$("#display_products").on('click', '.delete_product', delete_product);	
     });
 
 </script>
