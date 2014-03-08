@@ -1,0 +1,168 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Webception</title>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<style>
+body {
+	padding-top: 60px;
+}
+.red-border
+{
+  border:2px solid red; 
+}
+.green-border
+{
+  border:2px solid green; 
+}
+
+</style>
+<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+	
+</script>
+</head>
+
+<body>
+<form class="form-horizontal" method="get" action="test.php" id="signup_form" role="form">
+            
+  <!-- Sign Up Form -->
+  <!-- Name -->
+  <div class="row">
+    <div class="col-md-11 col-xs-11 col-sm-11">
+      <input id="name" name="clientName" class="form-control" type="text" placeholder="Name" class="input-large" style="border-radius:0px; height:44px">
+    </div>
+  </div>
+    
+  <!-- Email input-->
+  <div class="checkbox">
+    <label>
+    <input type="checkbox" name="customize_product" id="customize" value="1" />
+    Enable product customization</label>
+  </div>   
+  
+  <!-- Button -->
+  
+    <center>
+    <input type="submit" id="submit_signup" class="btn btn-success" value="Sign up" style="margin-top:20px; width:260px"/>
+    </center>
+  
+
+</form>
+
+<script type="text/javascript">
+  
+  var ok_sign = "<span class='glyphicon glyphicon-ok-circle' style='font-size: 15px; color: green;'></span>";
+  var remove_sign ="<span class='glyphicon glyphicon-remove-circle' style='font-size: 15px; color:red;'></span>";
+  var is_username_available = false;
+
+	function check_signup_username()
+  {
+      var username = $("#signup_username").val();
+      if (username == "") {return false;};
+      for(var i=0; i<username.length;i++)
+      {
+        if(username[i] == " ")
+          return false; 
+      }
+      return true;
+  }
+
+  function check_password_fn(event)
+  {
+    $("#check_password").empty();
+    var temp = $("#signup_password").val();
+    if (temp.length > 6 && temp.length < 16)
+    {
+      $("#check_password").append(ok_sign);
+    }
+    else
+    {
+      $("#check_password").append(remove_sign);
+    }
+  }
+
+  function check_reenterpassword_fn(event)
+  {
+    $("#check_reenterpassword").empty();
+    var password = $("#signup_password").val();
+    var temp = $("#reenterpassword").val();
+
+    if (temp == password && !(temp == ""))
+    {
+      $("#check_reenterpassword").append(ok_sign);
+    }
+    else
+    {
+      $("#check_reenterpassword").append(remove_sign);
+    }
+  }
+
+  function validate_form(event)
+  {
+    var password = $("#signup_password").val();
+    var re_password = $("#reenterpassword").val();
+    if (password.length > 6 && password.length < 16)
+    {
+      event.preventDefault();
+    }
+    else
+    {
+      if (re_password == password && !(re_password == ""))
+      {
+        event.preventDefault();
+      }
+
+      if(!is_username_available)
+        event.preventDefault();
+    }
+  }
+
+  $("#signup_username").keypress(function(event) {
+    /* Act on the event */
+    var username = $("#signup_username").val();
+    //console.log(check_availability(username));
+    $("#check_username").empty();
+
+    if (check_signup_username())
+    {
+      $.get("checkAvailability.php",
+        {
+          q:username
+        },
+        function(data,status)
+        {
+          //alert("Data: " + data + "\nStatus: " + status);
+          temp = data;
+          if (data == "Available")
+          {
+            $("#check_username").empty();
+            $("#check_username").append("<span class='glyphicon glyphicon-ok-circle' style='font-size: 15px; color: green;'></span>");
+            is_username_available = true;
+          }
+          else
+          {
+            $("#check_username").empty();
+            $("#check_username").append("<span class='glyphicon glyphicon-remove-circle' style='font-size: 15px; color:red;'></span>");
+            is_username_available = false;
+          }
+        });
+    }
+    else
+    {
+      $("#check_username").append("<span class='glyphicon glyphicon-remove-circle' style='font-size: 15px; color:red;'></span>");
+    }
+  });
+
+  //$("#signup_password").keypress(check_password_fn);
+  $("#signup_password").focusout(check_password_fn);
+
+  //$("#reenterpassword").keydown(check_reenterpassword_fn);
+  $("#reenterpassword").focusout(check_reenterpassword_fn);
+
+  //$("#signup_form").submit(validate_form);
+</script>
+</body>
+</html>
