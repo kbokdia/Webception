@@ -19,7 +19,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'>Shopify's</h2>
+        <h2 class='text-center' id='store_title'>Shopify's<label class='pull-right'><button class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div-->
 <?php
 	
@@ -27,6 +27,7 @@
 	
 	$product_id = $_GET['product_id'];
 
+	echo "<br />";
 	echo "<div class = 'row'><div class='col-md-1'></div><div class='col-md-4'>";
 
 	include($root."/header.php");
@@ -46,5 +47,12 @@
 		}
 	}
 ?></div><!--close container-->
+    <footer class='navbar navbar-default navbar-fixed-bottom'>
+    <div class='container'>     
+      <ul class='nav navbar-nav navbar-right'>
+        <li><a href='#'>powered by &copy Webception</a></li>
+      </ul>
+    </div>
+  </footer>
   </body>
   </html>

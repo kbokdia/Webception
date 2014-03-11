@@ -5,6 +5,7 @@
 	
 	$product_id = $_GET['product_id'];
 
+	echo "<br />";
 	echo "<div class = 'row'><div class='col-md-1'></div><div class='col-md-4'>";
 
 	include($root."/header.php");

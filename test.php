@@ -50,10 +50,17 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'>".$store_title."</h2>
+        <h2 class='text-center' id='store_title'>".$store_title."<label class='pull-right'><button class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div-->";
 
     $footer_content = "</div><!--close container-->
+    <footer class='navbar navbar-default navbar-fixed-bottom'>
+    <div class='container'>     
+      <ul class='nav navbar-nav navbar-right'>
+        <li><a href='#'>powered by &copy Webception</a></li>
+      </ul>
+    </div>
+  </footer>
   </body>
   </html>";
 
@@ -120,7 +127,7 @@
       while($row = mysqli_fetch_array($result)){
         $image_location = substr(strrchr($row['product_image'], "/"), 1);
        // echo $image_location ."<br/>";
-        $product_content .= "<div class='col-xs-12 col-sm-6 col-md-3'><a href = '#'><img src = 'images/".$image_location."'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>".$row['name']."</h5></a></div>";
+        $product_content .= "<div class='col-xs-12 col-sm-6 col-md-3'><a href = 'view_product.php?product_id=".$row['product_id']."'><img src = 'images/".$image_location."'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>".$row['name']."</h5></a></div>";
       }
     }
     else{
@@ -142,7 +149,7 @@
   echo "<h4>You have successfully build and published your store.</h4>";
   echo "<a href='users/".$store_name."/'>".$store_name."</a>";
 
-  echo $headerContent;
+  //echo $headerContent;
 
   $view_page_content = $headerContent;
 
