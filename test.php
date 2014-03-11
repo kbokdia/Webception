@@ -1,6 +1,6 @@
 <?php 
-  $store_id = 41;
-  $store_name = "shopify";
+  $store_id = $_POST['store_id'];
+  $store_name = $_POST['store_name'];
 
   $page_title;
   include("header.php");
@@ -24,9 +24,9 @@
     }
   }
 
-  echo "<pre>";
-  print_r($categories);
-  echo "</pre>";
+  //echo "<pre>";
+  //print_r($categories);
+  //echo "</pre>";
 
   $index_page = "";
 
@@ -113,7 +113,7 @@
     if($result = mysqli_query($connection,$sql)){
       while($row = mysqli_fetch_array($result)){
         $image_location = substr(strrchr($row['product_image'], "/"), 1);
-        echo $image_location ."<br/>";
+       // echo $image_location ."<br/>";
         $product_content .= "<div class='col-xs-12 col-sm-6 col-md-3'><a href = '#'><img src = 'images/".$image_location."'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>".$row['name']."</h5></a></div>";
       }
     }
@@ -138,6 +138,8 @@
     fclose($file);
   }
 
+  echo "<h4>You have successfully build and published your store.</h4>";
+  echo "<a href='users/".$store_name."/'>".$store_name."</a>";
 
   mysqli_close($connection);
 ?>

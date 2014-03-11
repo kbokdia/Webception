@@ -4,7 +4,7 @@
       <meta charset='utf-8'>
       <meta http-equiv='X-UA-Compatible' content='IE=edge'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
-      <title>Shopify's</title>
+      <title>New Store's</title>
       <link href='../../css/bootstrap.css' rel='stylesheet' type='text/css'>
       <script src='../../js/jquery-1.10.2.js'></script>
       <script src='../../js/bootstrap.js'></script>
@@ -19,7 +19,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'>Shopify's</h2>
+        <h2 class='text-center' id='store_title'>New Store's</h2>
       </div><!--close title div--> <!--Store navbar-->
       <nav class='nav navbar-default' style='border-color: white; background-color: white;'  role='navigation'>
         <div class='navbar-header'>
@@ -31,9 +31,9 @@
           </button>
         </div>
       <div class='navbar-collapse collapse' id='navbar-store-list-left'>
-          <ul class='nav nav-pills nav-justified' id='display_categories'><li><a href = 'index.php'>Jeans</a></li><li class='active'><a href = 'Shirts.php'>Shirts</a></li><li><a href = 'T-Shirts.php'>T-Shirts</a></li></ul></div></nav> <!--Display store products-->
+          <ul class='nav nav-pills nav-justified' id='display_categories'><li class='active'><a href = 'index.php'>Newest</a></li><li><a href = 'oldest.php'>oldest</a></li></ul></div></nav> <!--Display store products-->
       <div id='display_products' style='padding-top: 40px;'>
-        <div id='display_products_row' class='row'><div class='col-xs-12 col-sm-6 col-md-3'><a href = '#'><img src = 'images/2bbz5x30h4regular-fit-patriot-blue-shirt-in-mandarin-collar-full-sleeves-original.jpg'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>Blue Shirt</h5></a></div><div class='col-xs-12 col-sm-6 col-md-3'><a href = '#'><img src = 'images/7jpd159xsrregular-fit-purple-shirt-in-mandarin-collar-full-sleeves-original.jpg'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>marun-shirt</h5></a></div></div>
+        <div id='display_products_row' class='row'></div>
   </div><!--close display products--></div><!--close container-->
   </body>
   </html>

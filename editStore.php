@@ -63,10 +63,14 @@ body {
 			<li><a class='btn' id='add_product_btn'>Add Product</a></li>
 			<li><a class='btn' id="display_all_products_btn">Display all products</a></li>
 		</ul>
-		<ul class="nav navbar-nav navbar-right">
-		    <li><form><input type="submit" value="Publish" /></form></li>
-		  	<li><a href="index.php">Exit</a></li>
-		</ul>
+		<form id="form_store_details" name="form_store_details" action="test.php" method="post">
+			<ul class="nav navbar-nav navbar-right">
+				<input type="hidden" name="store_name" value="<?php echo $store_name; ?>" />
+				<input type="hidden" name="store_id" value="<?php echo $store_id; ?>" />
+			    <li><a id="publish_btn" href="javascript:document.forms['form_store_details'].submit()">Publish</a></li>
+			  	<li><a href="index.php">Exit</a></li>
+			</ul>
+		</form>
     </div>
   </div>
 </nav>
