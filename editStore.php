@@ -64,7 +64,7 @@ body {
 			<li><a class='btn' id="display_all_products_btn">Display all products</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
-		    <li><a href="#">Publish</a></li>
+		    <li><form><input type="submit" value="Publish" /></form></li>
 		  	<li><a href="index.php">Exit</a></li>
 		</ul>
     </div>
