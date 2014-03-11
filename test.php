@@ -1,6 +1,7 @@
 <?php 
   $store_id = $_POST['store_id'];
   $store_name = $_POST['store_name'];
+  $store_location = "users/".$store_name."/";
 
   $page_title;
   include("header.php");
@@ -28,19 +29,7 @@
   //print_r($categories);
   //echo "</pre>";
 
-  $index_page = "";
-
-  for($i=0 ; $i<count($categories);$i++){
-
-    if($i == 0){
-      $page_title = "users/".$store_name."/index.php";
-      $index_page = $categories[0]["category_name"];
-    }
-    else
-      $page_title = "users/".$store_name."/".clean($categories[$i]["category_name"]).".php";
-    $page_content;
-
-    $headerContent = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+  $headerContent = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
     <html xmlns='http://www.w3.org/1999/xhtml'>
     <head>
       <meta charset='utf-8'>
@@ -63,6 +52,23 @@
       <div class='center-block page-header'>
         <h2 class='text-center' id='store_title'>".$store_title."</h2>
       </div><!--close title div-->";
+
+    $footer_content = "</div><!--close container-->
+  </body>
+  </html>";
+
+
+  $index_page = "";
+
+  for($i=0 ; $i<count($categories);$i++){
+
+    if($i == 0){
+      $page_title = "users/".$store_name."/index.php";
+      $index_page = $categories[0]["category_name"];
+    }
+    else
+      $page_title = "users/".$store_name."/".clean($categories[$i]["category_name"]).".php";
+    $page_content;
 
     //echo $headerContent;
 
@@ -123,11 +129,6 @@
 
     $product_content .= "</div>
   </div><!--close display products-->";
-
-      $footer_content = "</div><!--close container-->
-  </body>
-  </html>";
-
     
     $page_content = $headerContent . $nav_content . $product_content . $footer_content;
 
@@ -141,5 +142,27 @@
   echo "<h4>You have successfully build and published your store.</h4>";
   echo "<a href='users/".$store_name."/'>".$store_name."</a>";
 
+  echo $headerContent;
+
+  $view_page_content = $headerContent;
+
+  
+  $file = fopen("view_product.php", "r");
+  while(!feof($file))
+  {
+    //echo fgets($file). "<br>";
+    $view_page_content .= fgets($file);
+  }
+  fclose($file);
+  
+  $view_page_content .= $footer_content;
+
+  //echo $view_page_content;
+
+  $file = fopen($store_location."view_product.php","w");
+  fwrite($file, $view_page_content);
+  fclose($file);
+
   mysqli_close($connection);
 ?>
+
