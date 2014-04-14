@@ -146,8 +146,8 @@
     fclose($file);
   }
 
-  echo "<h4>You have successfully build and published your store.</h4>";
-  echo "<a href='users/".$store_name."/'>".$store_name."</a>";
+  //echo "<h4>You have successfully build and published your store.</h4>";
+  //echo "<a href='users/".$store_name."/'>".$store_name."</a>";
 
   //echo $headerContent;
 
@@ -171,5 +171,7 @@
   fclose($file);
 
   mysqli_close($connection);
+
+  header("Location:index.php");
 ?>
 

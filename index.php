@@ -11,6 +11,7 @@ session_start();
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/avgrund.css">
 <style>
+
 html,body 
 {
 	height: 100%;
@@ -19,6 +20,10 @@ html
 {
 	background-color: #222;
 	background-repeat: repeat;
+}
+table
+{
+	font-size: 16px;
 }
 </style>
 <!--<link href="css/bootstrap-responsive.css" rel="stylesheet" />-->
@@ -58,14 +63,21 @@ if(isset($_GET['error']))
 if(isset($_SESSION["s_username"]))
 {
 	require("functions.php");
+	
 	$counter = 0;
 	$stores = get_user_store();
 	$store="<table class='table table-striped'><thead><th style='text-align:center;'>#</th><th style='text-align:center;'>Stores</th><th></th><th></th></thead><tbody>";
 	for($i=0;$i<count($stores);$i++)
 	{
+		$disable_store_view ="disabled";
 		if($stores[$i]["user_id"] == $_SESSION["s_id"])
 		{
-			$store .= "<tr><td>".(++$counter)."</td><td>".$stores[$i]["store_name"]."<td><a href='editStore.php?store_id=".$stores[$i]["store_id"]."&store_name=".$stores[$i]["store_name"]."' class='btn btn-success btn-xs'>Edit</a></td><td><a href='removeStore.php?id=".$stores[$i]["store_id"]."&store=".$stores[$i]["store_name"]."' class='btn btn-danger btn-xs'>Delete</a></td></tr>";
+			$fileName = "users/".$stores[$i]['store_name']."/index.php";
+			if(file_exists($fileName)){
+				$disable_store_view = "";
+			}
+
+			$store .= "<tr><td>".(++$counter)."</td><td>".$stores[$i]["store_name"]."</td><td><a href='users/".$stores[$i]['store_name']."/' class='btn btn-primary btn-xs' ".$disable_store_view.">View</a></td><td><a href='editStore.php?store_id=".$stores[$i]["store_id"]."&store_name=".$stores[$i]["store_name"]."' class='btn btn-success btn-xs'>Edit</a></td><td><a href='removeStore.php?id=".$stores[$i]["store_id"]."&store=".$stores[$i]["store_name"]."' class='btn btn-danger btn-xs'>Delete</a></td></tr>";
 			$hasStore = true;
 		} 
 	}
@@ -327,7 +339,7 @@ else
   </div><!--close modal-dialog-->
 </div><!--close modal-->
 <script type="text/javascript">
- var ok_sign = "<span class='glyphicon glyphicon-ok-circle' style='font-size: 15px; color: green;'></span>";
+  var ok_sign = "<span class='glyphicon glyphicon-ok-circle' style='font-size: 15px; color: green;'></span>";
   var remove_sign ="<span class='glyphicon glyphicon-remove-circle' style='font-size: 15px; color:red;'></span>";
   var is_username_available = false;
 
@@ -380,16 +392,16 @@ else
 
     if(!is_username_available)
     {
-        event.preventDefault();
+        return false;
     }
     else
     {
     	if(temp == password && !(temp == ""))
 	    {
-	    	event.preventDefault();	    	
+	    	return true;	    	
 	    }
 	    else
-	    	return;
+	    	return false;
     }
   }
 

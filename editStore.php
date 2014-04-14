@@ -63,7 +63,7 @@ body {
 			<li><a class='btn' id='add_product_btn'>Add Product</a></li>
 			<li><a class='btn' id="display_all_products_btn">Display all products</a></li>
 		</ul>
-		<form id="form_store_details" name="form_store_details" action="test.php" method="post">
+		<form id="form_store_details" name="form_store_details" action="publish.php" method="post">
 			<ul class="nav navbar-nav navbar-right">
 				<input type="hidden" name="store_name" value="<?php echo $store_name; ?>" />
 				<input type="hidden" name="store_id" value="<?php echo $store_id; ?>" />
@@ -221,6 +221,7 @@ body {
 	var product_key_features = new Array();
 	var product_description = new Array();
 	var product_model_no = new Array();
+	var product_customizable = new Array();
 	
 	//To check if add category btn clicked
 	var is_add_category_btn_clicked = false;
@@ -292,6 +293,7 @@ body {
 				 product_key_features[i] = value.product_key_features;
 				 product_model_no[i] = value.product_model_no;
 				 product_price[i] = value.price;
+				 product_customizable[i] = value.customizable;
 			});
 			display_products_fn();
 		});
@@ -520,6 +522,11 @@ body {
 		
 		//empties the display area
 		$("#display_products_row").empty();
+		
+		var display_customize_btn = "";
+		if(product_customizable[temp_product_index] == 1){
+			display_customize_btn = "<button class='btn btn-success btn-lg' disabled='disabled'>Customize</button>"
+		}
 
 		var content = "<div class='row'>";
 		content += "<div class='col-md-1'></div>";
@@ -532,7 +539,7 @@ body {
 		content += "<div class='col-md-6'>";
 		content += "<p><h2>"+product_name[temp_product_index]+"</h2><small class='text-muted'>Model: "+product_model_no[temp_product_index]+"</small></p><br/>";
 		content += "<p><h3>Rs."+product_price[temp_product_index]+"<h3></p>";
-		content += "<p><button class='btn btn-success btn-lg' disabled='disabled'><span class='glyphicon glyphicon-shopping-cart'></span> Add to cart</button></p><br/><br/>";
+		content += "<p><button class='btn btn-primary btn-lg' disabled='disabled'><span class='glyphicon glyphicon-shopping-cart'></span> Add to cart</button>&nbsp "+display_customize_btn+" </p><br/><br/>";
 		content += "<p><h4>Product Description</h4></p><br/><p>"+product_description[temp_product_index]+"</p>";
 		content += "</div>";
 		content += "</div>";
