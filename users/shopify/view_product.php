@@ -35,13 +35,14 @@
 	$sql = "SELECT * FROM product WHERE product_id = " . $product_id;
 	if($result = mysqli_query($connection,$sql)){
 		while($row = mysqli_fetch_array($result)){
-			
+			$image_location = substr(strrchr($row['product_image'], "/"), 1);
+
 			$display_customize_btn = "";
 			if($row['customizable'] == 1){
-				$display_customize_btn = "<button class='btn btn-success btn-lg'>Customize</button>";
+				$display_customize_btn = "<a href='../../canvas_tuts.php?location=".$row['product_image']."' class='btn btn-success btn-lg' onclick='callCustomizeApp();' >Customize</a>";
 			}
 
-			$image_location = substr(strrchr($row['product_image'], "/"), 1);
+			
 			echo "<img src='images/".$image_location."' width='100%' style='height:400px;' /></div><!--close div col-md-4 -->";
 			echo "<div class='col-md-1'></div>";
 			echo "<div class='col-md-6'>";
@@ -52,7 +53,9 @@
 			echo "</div><!--close div col-md-6--></div><!--close div row -->";
 		}
 	}
-?></div><!--close container-->
+?>
+
+</div><!--close container-->
     <footer class='navbar navbar-default navbar-fixed-bottom'>
     <div class='container'>     
       <ul class='nav navbar-nav navbar-right'>
