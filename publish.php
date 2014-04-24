@@ -50,7 +50,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'>".$store_title."<label class='pull-right'><button class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
+        <h2 class='text-center' id='store_title'><a href='index.php'>".$store_title."</a><label class='pull-right'><button id='cartBtn' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div-->";
 
     $footer_content = "</div><!--close container-->
@@ -64,7 +64,7 @@
   </body>
   </html>";
 
-
+  
   $index_page = "";
 
   for($i=0 ; $i<count($categories);$i++){
@@ -174,4 +174,3 @@
 
   header("Location:index.php");
 ?>
-

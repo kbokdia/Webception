@@ -19,7 +19,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'>Trendzzz...<label class='pull-right'><button class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
+        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div--> <!--Store navbar-->
       <nav class='nav navbar-default' style='border-color: white; background-color: white;'  role='navigation'>
         <div class='navbar-header'>

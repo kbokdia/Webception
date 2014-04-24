@@ -1,2 +1,15 @@
 @charset "UTF-8";
 /* CSS Document */
+
+#button-group{
+	margin:5px;
+	padding-bottom: 10px;
+}
+
+#textDiv{
+	padding: 10px;
+}
+
+#imageDiv{
+	padding: 10px;
+}
