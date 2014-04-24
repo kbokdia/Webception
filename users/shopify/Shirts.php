@@ -9,9 +9,7 @@
       <script src='../../js/jquery-1.10.2.js'></script>
       <script src='../../js/bootstrap.js'></script>
 
-      <script type='text/javascript'>
-
-      </script>
+      
     </head>
     <body>
       <!--Container-->
@@ -19,7 +17,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
+        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' onload='getNoOfProducts();' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div--> <!--Store navbar-->
       <nav class='nav navbar-default' style='border-color: white; background-color: white;'  role='navigation'>
         <div class='navbar-header'>
@@ -35,6 +33,17 @@
       <div id='display_products' style='padding-top: 40px;'>
         <div id='display_products_row' class='row'><div class='col-xs-12 col-sm-6 col-md-3'><a href = 'view_product.php?product_id=34'><img src = 'images/2bbz5x30h4regular-fit-patriot-blue-shirt-in-mandarin-collar-full-sleeves-original.jpg'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>Sero Blue Shirt</h5></a></div><div class='col-xs-12 col-sm-6 col-md-3'><a href = 'view_product.php?product_id=35'><img src = 'images/7jpd159xsrregular-fit-purple-shirt-in-mandarin-collar-full-sleeves-original.jpg'width='100%' height='250px' alt='...' style='height:250px;' /><h5 class='text-center product_name'>Levis Maroon Shirt</h5></a></div></div>
   </div><!--close display products--></div><!--close container-->
+    <script type='text/javascript'>
+       
+      function getNoOfProducts(){
+          $.get('get_no_of_cart_item.php').done(function(data){
+            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart(';
+              str += data;
+              str += ')'
+            $('#cartBtn').html(str);
+          });
+        }
+      </script>
     <footer class='navbar navbar-default navbar-fixed-bottom'>
     <div class='container'>     
       <ul class='nav navbar-nav navbar-right'>

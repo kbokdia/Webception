@@ -9,9 +9,7 @@
       <script src='../../js/jquery-1.10.2.js'></script>
       <script src='../../js/bootstrap.js'></script>
 
-      <script type='text/javascript'>
-
-      </script>
+      
     </head>
     <body>
       <!--Container-->
@@ -19,7 +17,7 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
+        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' onload='getNoOfProducts();' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div-->
 <?php
 	
@@ -46,26 +44,52 @@
 			echo "<img src='images/".$image_location."' width='100%' style='height:400px;' /></div><!--close div col-md-4 -->";
 			echo "<div class='col-md-1'></div>";
 			echo "<div class='col-md-6'>";
-			echo "<p><h2>".$row['name']."</h2><small class='text-muted'>Model: ".$row['product_model_no']."</small></p><br/>";
-			echo "<p><h3>Rs.".$row['price']."<h3></p>";
+			echo "<p><h2 id='product_name'>".$row['name']."</h2><small class='text-muted'>Model: ".$row['product_model_no']."</small></p><br/>";
+			echo "<p><h3>Rs.<label id='product_price'>".$row['price']."</label><h3></p>";
 			echo "<p><button onclick='addCartBtn();' class='btn btn-primary btn-lg'><span class='glyphicon glyphicon-shopping-cart'></span> Add to cart</button>&nbsp".$display_customize_btn."</p><br/><br/>";
 			echo "<p><h4>Product Description</h4></p><br/><p>".$row['product_description']."</p>";
 			echo "</div><!--close div col-md-6--></div><!--close div row -->";
+			echo "<input type='hidden' id='product_id' value='".$product_id."' />";
 		}
 	}
 ?>
 
 <script type="text/javascript">
-	function addCartBtn(){
-		var btn = document.getElementById('cartBtn');
-		btn.innerHTML = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart("+(getNoOfProducts()+1)+")";
+
+	var btn = document.getElementById('cartBtn');
+	
+	function postProduct(){
+		var name = $('#product_name').text();
+		var price = $('#product_price').text();
+		var id = $('#product_id').val();
+
+		$.post('add_to_cart.php',{add_to_cart:1, product_id: id, product_name: name, product_price: price })
+			.done(function(data){
+				getNoOfProducts();
+			});
+	}
+
+	function addCartBtn(){		
+		postProduct();		
 	}
 
 	function getNoOfProducts(){
-		var str = document.getElementById('cartBtn').innerHTML;
-		return parseInt(str.charAt((str.search("Cart")+5)));
+		$.get('get_no_of_cart_item.php').done(function(data){
+			btn.innerHTML = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart("+data+")";
+		});
 	}
 </script></div><!--close container-->
+    <script type='text/javascript'>
+       
+      function getNoOfProducts(){
+          $.get('get_no_of_cart_item.php').done(function(data){
+            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart(';
+              str += data;
+              str += ')'
+            $('#cartBtn').html(str);
+          });
+        }
+      </script>
     <footer class='navbar navbar-default navbar-fixed-bottom'>
     <div class='container'>     
       <ul class='nav navbar-nav navbar-right'>

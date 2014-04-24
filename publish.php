@@ -1,4 +1,28 @@
-<?php 
+<?php
+
+function copyPHPFiles($location,$fileName,$header = "",$footer = "")
+{
+  $view_page_content = $header;
+
+  
+  $file = fopen($fileName, "r");
+  while(!feof($file))
+  {
+    //echo fgets($file). "<br>";
+    $view_page_content .= fgets($file);
+  }
+  fclose($file);
+  
+  $view_page_content .= $footer;
+
+  //echo $view_page_content;
+
+  $file = fopen($location.$fileName,"w");
+  fwrite($file, $view_page_content);
+  fclose($file);
+}
+
+
   $store_id = $_POST['store_id'];
   $store_name = $_POST['store_name'];
   $store_location = "users/".$store_name."/";
@@ -40,9 +64,7 @@
       <script src='../../js/jquery-1.10.2.js'></script>
       <script src='../../js/bootstrap.js'></script>
 
-      <script type='text/javascript'>
-
-      </script>
+      
     </head>
     <body>
       <!--Container-->
@@ -50,10 +72,21 @@
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'><a href='index.php'>".$store_title."</a><label class='pull-right'><button id='cartBtn' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
+        <h2 class='text-center' id='store_title'><a href='index.php'>".$store_title."</a><label class='pull-right'><button id='cartBtn' onload='getNoOfProducts();' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
       </div><!--close title div-->";
 
     $footer_content = "</div><!--close container-->
+    <script type='text/javascript'>
+       
+      function getNoOfProducts(){
+          $.get('get_no_of_cart_item.php').done(function(data){
+            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart(';
+              str += data;
+              str += ')'
+            $('#cartBtn').html(str);
+          });
+        }
+      </script>
     <footer class='navbar navbar-default navbar-fixed-bottom'>
     <div class='container'>     
       <ul class='nav navbar-nav navbar-right'>
@@ -151,24 +184,23 @@
 
   //echo $headerContent;
 
-  $view_page_content = $headerContent;
+//This is to write view_product.php
 
-  
-  $file = fopen("view_product.php", "r");
-  while(!feof($file))
-  {
-    //echo fgets($file). "<br>";
-    $view_page_content .= fgets($file);
-  }
-  fclose($file);
-  
-  $view_page_content .= $footer_content;
+  $fileName = "view_product.php";
 
-  //echo $view_page_content;
+  copyPHPFiles($store_location,$fileName,$headerContent,$footer_content);
 
-  $file = fopen($store_location."view_product.php","w");
-  fwrite($file, $view_page_content);
-  fclose($file);
+  $fileName = "add_to_cart.php";
+
+  copyPHPFiles($store_location,$fileName,$headerContent,$footer_content);
+
+  $fileName = "get_no_of_cart_item.php";
+
+  copyPHPFiles($store_location,$fileName);
+
+  $fileName = "addslashes_to_POST.php";
+
+  copyPHPFiles($store_location,$fileName);
 
   mysqli_close($connection);
 

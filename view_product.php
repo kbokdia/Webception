@@ -25,34 +25,37 @@
 			echo "<div class='col-md-1'></div>";
 			echo "<div class='col-md-6'>";
 			echo "<p><h2 id='product_name'>".$row['name']."</h2><small class='text-muted'>Model: ".$row['product_model_no']."</small></p><br/>";
-			echo "<p><h3>Rs.</h3><h3 id='product_price'>.".$row['price']."<h3></p>";
+			echo "<p><h3>Rs.<label id='product_price'>".$row['price']."</label><h3></p>";
 			echo "<p><button onclick='addCartBtn();' class='btn btn-primary btn-lg'><span class='glyphicon glyphicon-shopping-cart'></span> Add to cart</button>&nbsp".$display_customize_btn."</p><br/><br/>";
 			echo "<p><h4>Product Description</h4></p><br/><p>".$row['product_description']."</p>";
 			echo "</div><!--close div col-md-6--></div><!--close div row -->";
-			echo "<input type='hidden' id='product_id' value='".$product_id."' />"
+			echo "<input type='hidden' id='product_id' value='".$product_id."' />";
 		}
 	}
 ?>
 
 <script type="text/javascript">
+
+	var btn = document.getElementById('cartBtn');
 	
 	function postProduct(){
 		var name = $('#product_name').text();
 		var price = $('#product_price').text();
 		var id = $('#product_id').val();
 
-		$.post('add_to_cart.php',{add_to_cart:1, product_id: id, product_name: name, product_price: price });
+		$.post('add_to_cart.php',{add_to_cart:1, product_id: id, product_name: name, product_price: price })
+			.done(function(data){
+				getNoOfProducts();
+			});
 	}
 
-	function addCartBtn(){
-		var btn = document.getElementById('cartBtn');
-		btn.innerHTML = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart("+(getNoOfProducts()+1)+")";
-
-		postProduct();
+	function addCartBtn(){		
+		postProduct();		
 	}
 
 	function getNoOfProducts(){
-		var str = document.getElementById('cartBtn').innerHTML;
-		return parseInt(str.charAt((str.search("Cart")+5)));
+		$.get('get_no_of_cart_item.php').done(function(data){
+			btn.innerHTML = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart("+data+")";
+		});
 	}
 </script>
