@@ -67,20 +67,22 @@ function copyPHPFiles($location,$fileName,$header = "",$footer = "")
       
     </head>
     <body>
+    <input type='hidden' value='".$store_id."' id='store_id' />
       <!--Container-->
     <div class='container'>
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'><a href='index.php'>".$store_title."</a><label class='pull-right'><button id='cartBtn' onload='getNoOfProducts();' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
-      </div><!--close title div-->";
+        <h2 class='text-center' id='store_title'><a href='index.php'>".$store_title."</a><label class='pull-right'><a id='cartBtn' href='bill_info.html?store_id=".$store_id."' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart (0)</a></label></h2>
+      </div><!--close title div--><div id='billContainer'></div>";
 
     $footer_content = "</div><!--close container-->
     <script type='text/javascript'>
-       
+      $(window).load(getNoOfProducts());
       function getNoOfProducts(){
-          $.get('get_no_of_cart_item.php').done(function(data){
-            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart(';
+          var store_id = $('#store_id').val();
+          $.get('get_no_of_cart_item.php', {store_id: store_id }).done(function(data){
+            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart (';
               str += data;
               str += ')'
             $('#cartBtn').html(str);
@@ -187,20 +189,34 @@ function copyPHPFiles($location,$fileName,$header = "",$footer = "")
 //This is to write view_product.php
 
   $fileName = "view_product.php";
-
   copyPHPFiles($store_location,$fileName,$headerContent,$footer_content);
 
   $fileName = "add_to_cart.php";
+  copyPHPFiles($store_location,$fileName);
 
-  copyPHPFiles($store_location,$fileName,$headerContent,$footer_content);
+  $fileName = "bill_info.php";
+  copyPHPFiles($store_location,$fileName);
 
   $fileName = "get_no_of_cart_item.php";
-
   copyPHPFiles($store_location,$fileName);
 
   $fileName = "addslashes_to_POST.php";
-
   copyPHPFiles($store_location,$fileName);
+
+  $footer_content = "</div><!--close container-->
+    
+    <footer class='navbar navbar-default navbar-fixed-bottom'>
+    <div class='container'>     
+      <ul class='nav navbar-nav navbar-right'>
+        <li><a href='#'>powered by &copy Webception</a></li>
+      </ul>
+    </div>
+  </footer>
+  </body>
+  </html>";
+
+  $fileName = "bill_info.html";
+  copyPHPFiles($store_location,$fileName, $headerContent, $footer_content);
 
   mysqli_close($connection);
 

@@ -1,0 +1,58 @@
+<script type='text/javascript'>
+  $(window).load(getBillTable());
+
+  var store_id
+  
+  function getBillTable(){
+      store_id = $('#store_id').val();
+      $.get('bill_info.php', {store_id: store_id }).done(function(data){
+        
+        $('#billContainer').html(data);
+        getNoOfProducts();
+      });
+    }
+
+  function getNoOfProducts(){
+    store_id = $('#store_id').val();
+    $.get('get_no_of_cart_item.php', {store_id: store_id }).done(function(data){
+      var str = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart (";
+        str += data;
+        str += ')'
+      $('#cartBtn').html(str);
+    });
+  }
+
+  function changeQuantity(e){
+    //console.log(quantity);
+    var product_quantity = $(e.currentTarget).val();
+    if ((product_quantity > 0) && (product_quantity < 11)) {
+      var product_id = $(e.currentTarget).parents('td').find('.product_id').val();
+
+      $.post('add_to_cart.php',{change_quantity: 1, store_id: store_id, product_id: product_id, product_quantity: product_quantity}, function(data, textStatus, xhr) {
+        
+         $('#billContainer').empty();
+         getBillTable();
+        //window.location.reload(true);
+      });
+    }
+    else{
+      return false;
+    }
+  }
+
+  function removeItem(e){
+    if(confirm("Are you sure???")){
+      var product_id = $(e.currentTarget).parents('tr').find('.product_id').val();
+      console.log(product_id);
+
+      $.post('add_to_cart.php',{remove_item: 1, store_id: store_id, product_id: product_id}, function(data, textStatus, xhr) {
+          
+         $('#billContainer').empty();
+         getBillTable();
+        //window.location.reload(true);
+      });
+    }
+    else
+      return false;
+  }
+</script>

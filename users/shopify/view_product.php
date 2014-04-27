@@ -12,13 +12,14 @@
       
     </head>
     <body>
+    <input type='hidden' value='41' id='store_id' />
       <!--Container-->
     <div class='container'>
 
       <!--Title-->
       <div class='center-block page-header'>
-        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><button id='cartBtn' onload='getNoOfProducts();' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart(0)</button></label></h2>
-      </div><!--close title div-->
+        <h2 class='text-center' id='store_title'><a href='index.php'>Trendzzz...</a><label class='pull-right'><a id='cartBtn' href='bill_info.html?store_id=41' class='btn btn-default'><span class='glyphicon glyphicon-shopping-cart'></span> Cart (0)</a></label></h2>
+      </div><!--close title div--><div id='billContainer'></div>
 <?php
 	
 	$root = dirname(dirname(dirname(__FILE__)));
@@ -41,7 +42,7 @@
 			}
 
 			
-			echo "<img src='images/".$image_location."' width='100%' style='height:400px;' /></div><!--close div col-md-4 -->";
+			echo "<img src='images/".$image_location."' id='product_image' width='100%' style='height:400px;' /></div><!--close div col-md-4 -->";
 			echo "<div class='col-md-1'></div>";
 			echo "<div class='col-md-6'>";
 			echo "<p><h2 id='product_name'>".$row['name']."</h2><small class='text-muted'>Model: ".$row['product_model_no']."</small></p><br/>";
@@ -62,8 +63,10 @@
 		var name = $('#product_name').text();
 		var price = $('#product_price').text();
 		var id = $('#product_id').val();
+		var store_id = $('#store_id').val()
+		var image = $('#product_image').attr('src');
 
-		$.post('add_to_cart.php',{add_to_cart:1, product_id: id, product_name: name, product_price: price })
+		$.post('add_to_cart.php',{add_to_cart:1, product_id: id, product_name: name, product_price: price, product_image: image, store_id: store_id })
 			.done(function(data){
 				getNoOfProducts();
 			});
@@ -74,16 +77,18 @@
 	}
 
 	function getNoOfProducts(){
-		$.get('get_no_of_cart_item.php').done(function(data){
+		var store_id = $('#store_id').val();
+		$.get('get_no_of_cart_item.php', {store_id: store_id }).done(function(data){
 			btn.innerHTML = "<span class='glyphicon glyphicon-shopping-cart'></span> Cart("+data+")";
 		});
 	}
 </script></div><!--close container-->
     <script type='text/javascript'>
-       
+      $(window).load(getNoOfProducts());
       function getNoOfProducts(){
-          $.get('get_no_of_cart_item.php').done(function(data){
-            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart(';
+          var store_id = $('#store_id').val();
+          $.get('get_no_of_cart_item.php', {store_id: store_id }).done(function(data){
+            var str = '<span class=\'glyphicon glyphicon-shopping-cart\'></span> Cart (';
               str += data;
               str += ')'
             $('#cartBtn').html(str);
